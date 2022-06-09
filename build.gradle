@@ -8,6 +8,7 @@ group = "com.tars.capitalmarket"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -17,9 +18,18 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
-
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor:1.0.0")
+    implementation 'io.vavr:vavr:0.10.4'
+    implementation("org.json:json:20220320")
+    implementation("com.angelbroking.smartapi:smartapi-java:1.0.0")
 }
 
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("io.micronaut:micronaut-jackson-databind"))
+                .using(module("io.micronaut.serde:micronaut-serde-jackson:1.0.0"))
+    }
+}
 
 application {
     mainClass.set("com.tars.capitalmarket.Application")
